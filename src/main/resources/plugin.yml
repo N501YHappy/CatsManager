@@ -1,0 +1,16 @@
+name: CatsManager
+version: '1.0-SNAPSHOT'
+main: icu.n501yhappy.catsManager.CatsManager
+api-version: '1.18'
+authors: [ N501YHappy ]
+description: FriendtoCat
+website: https://n501yhappy.icu
+commands:
+  catmanager:
+    description: Make your friend like a cat!
+    aliases: cm
+    permission: catsmanager.command
+
+permissions:
+  catsmanager.command:
+    default: op
