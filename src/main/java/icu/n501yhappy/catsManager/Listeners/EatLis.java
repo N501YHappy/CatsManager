@@ -1,6 +1,7 @@
 package icu.n501yhappy.catsManager.Listeners;
 
 import icu.n501yhappy.catsManager.CatsManager;
+import icu.n501yhappy.catsManager.items.catnip;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,22 +51,35 @@ public class EatLis implements Listener {
     @EventHandler
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItem(event.getNewSlot()); // Get item in new slot
-
-        if (item != null && isFish(item)) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
+        ItemStack item = player.getInventory().getItem(event.getNewSlot());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (item != null && isFish(item)) {
                     applySlownessAura(player);
+                }else{
+                    cancel();
                 }
-            }.runTaskLater(CatsManager.instance, 1);
-        }
+            }
+        }.runTaskTimer(CatsManager.instance, 0L, 1L);
     }
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         Entity rightClickedEntity = event.getRightClicked();
-        //TODO
+        if (!(rightClickedEntity instanceof Player)) return;
+        Player clicked = (Player) rightClickedEntity;
+        if (Cats.contains(clicked)){
+            if (player.getItemInHand().isSimilar(catnip.get())){
+                clicked.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,10,10));
+                clicked.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,10,10));
+                clicked.addPotionEffect(new PotionEffect(PotionEffectType.JUMP,10,10));
+            }else{
+                if (clicked.hasPotionEffect(PotionEffectType.SLOW)){
+                    clicked.removePotionEffect(PotionEffectType.SLOW);
+                }else clicked.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE,100));
+            }
+        }
     }
     private void applySlownessAura(Player fishHolder) {
         List<Entity> nearbyEntities = fishHolder.getNearbyEntities(20, 20, 20);
@@ -74,7 +88,7 @@ public class EatLis implements Listener {
             if (entity instanceof Player) {
                 Player nearbyPlayer = (Player) entity;
                 if (!nearbyPlayer.equals(fishHolder) && Cats.contains(nearbyPlayer)) {
-                    nearbyPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10*20, 1));
+                    nearbyPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10*20, 100));
                     faceLocation(nearbyPlayer,fishHolder.getLocation());
                 }
             }

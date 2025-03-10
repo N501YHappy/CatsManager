@@ -33,7 +33,6 @@ public class AttackLis implements Listener {
             event.setDamage(event.getDamage()*0.9);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 3*20, 0));
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 3*20, 2));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 3*20, 0));
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10*20, 2));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10*20, 2));
         }

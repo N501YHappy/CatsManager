@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static icu.n501yhappy.catsManager.CatsManager.Cats;
-import static icu.n501yhappy.catsManager.CatsManager.instance;
+import static icu.n501yhappy.catsManager.CatsManager.*;
 
 public class catmanager implements CommandExecutor {
 
@@ -71,6 +71,7 @@ public class catmanager implements CommandExecutor {
         }
 
         Cats.add(target);
+        cat_team.addEntity(target);
         sender.sendMessage("§aPlayer " + playerName + " is now a cat!");
     }
 
@@ -94,6 +95,8 @@ public class catmanager implements CommandExecutor {
         }
 
         Cats.remove(target);
+        cat_team.removeEntity(target);
+        if (target.hasPotionEffect(PotionEffectType.SLOW)) target.removePotionEffect(PotionEffectType.SLOW);
         sender.sendMessage("§aPlayer " + playerName + " is no longer a cat!");
     }
 
